@@ -1,8 +1,11 @@
+import CustomButton from "@/components/CustomButton";
+import InputField from "@/components/InputField";
+import { icons, images } from "@/constants";
+import { Link } from "expo-router";
 import { useState } from "react";
 import { Image, ScrollView, Text, View } from "react-native";
 
-import InputField from "@/components/InputField";
-import { icons, images } from "@/constants";
+import "../global.css";
 
 const SignUp = () => {
   const [form, setForm] = useState({
@@ -10,6 +13,8 @@ const SignUp = () => {
     email: "",
     password: "",
   });
+
+  const onSignUpPress = async () => {};
 
   return (
     <ScrollView className="flex-1 bg-white">
@@ -45,6 +50,20 @@ const SignUp = () => {
             value={form.password}
             onChangeText={(value) => setForm({ ...form, password: value })}
           />
+          <CustomButton
+            title="Sign Up"
+            onPress={onSignUpPress}
+            className="mt-6"
+          />
+
+          {/* TODO: Add button to log in with Google */}
+          <Link
+            href="/sign-in"
+            className="text-lg text-center text-general-200 mt-10"
+          >
+            Already have an account?{" "}
+            <Text className="text-primary-500">Log In</Text>
+          </Link>
         </View>
       </View>
     </ScrollView>
