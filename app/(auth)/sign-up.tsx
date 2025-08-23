@@ -5,6 +5,7 @@ import { Link } from "expo-router";
 import { useState } from "react";
 import { Image, ScrollView, Text, View } from "react-native";
 
+import OAuth from "@/components/OAuth";
 import "../global.css";
 
 const SignUp = () => {
@@ -56,7 +57,7 @@ const SignUp = () => {
             className="mt-6"
           />
 
-          {/* TODO: Add button to log in with Google */}
+          <OAuth />
           <Link
             href="/sign-in"
             className="text-lg text-center text-general-200 mt-10"
@@ -65,6 +66,7 @@ const SignUp = () => {
             <Text className="text-primary-500">Log In</Text>
           </Link>
         </View>
+        {/* TODO: Add Verification modal */}
       </View>
     </ScrollView>
   );
