@@ -1,5 +1,13 @@
 import { neon } from "@neondatabase/serverless";
 
+// NOTE: Run this SQL to create a users table in "SQL Editor" of Neon DB Project
+// CREATE TABLE users (
+//     id SERIAL PRIMARY KEY,
+//     name VARCHAR(100) NOT NULL,
+//     email VARCHAR(100) UNIQUE NOT NULL,
+//     clerk_id VARCHAR(50) UNIQUE NOT NULL
+// );
+
 export async function POST(request: Request) {
   try {
     const sql = neon(`${process.env.DATABASE_URL}`);
