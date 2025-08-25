@@ -116,7 +116,7 @@ const recentRides = [
 const Home = () => {
   const { user } = useUser();
   return (
-    <SafeAreaView className="flex-1 items-center justify-center bg-white">
+    <SafeAreaView>
       <SignedIn>
         <FlatList
           data={recentRides?.slice(0, 5)}
