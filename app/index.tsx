@@ -1,8 +1,6 @@
 import { useAuth } from "@clerk/clerk-expo";
 import { Redirect } from "expo-router";
 
-import "./global.css";
-
 const IndexPage = () => {
   const { isSignedIn, isLoaded } = useAuth();
 
