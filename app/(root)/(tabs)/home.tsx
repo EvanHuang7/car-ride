@@ -1,8 +1,11 @@
 import Map from "@/components/Map";
 import RideCard from "@/components/RideCard";
 import { icons, images } from "@/constants";
+import { useLocationStore } from "@/store";
 import { SignedIn, SignedOut, useAuth, useUser } from "@clerk/clerk-expo";
+import * as Location from "expo-location";
 import { Link, router } from "expo-router";
+import { useEffect, useState } from "react";
 import {
   ActivityIndicator,
   FlatList,
@@ -126,6 +129,35 @@ const Home = () => {
   const { user } = useUser();
   const { signOut } = useAuth();
   const loading = false;
+
+  const { setUserLocation, setDestinationLocation } = useLocationStore();
+  const [hasPermission, setHasPermission] = useState<boolean>(false);
+
+  useEffect(() => {
+    (async () => {
+      // Asks the user to grant permissions for location
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      // If not granted
+      if (status !== "granted") {
+        setHasPermission(false);
+        return;
+      }
+
+      // If granted, set user location
+      let location = await Location.getCurrentPositionAsync({});
+
+      const address = await Location.reverseGeocodeAsync({
+        latitude: location.coords?.latitude!,
+        longitude: location.coords?.longitude!,
+      });
+
+      setUserLocation({
+        latitude: location.coords?.latitude,
+        longitude: location.coords?.longitude,
+        address: `${address[0].name}, ${address[0].region}`,
+      });
+    })();
+  }, []);
 
   const handleSignOut = () => {
     signOut();
