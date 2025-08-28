@@ -165,7 +165,15 @@ const Home = () => {
     router.replace("/(auth)/sign-in");
   };
 
-  const handleDestinationPress = () => {};
+  const handleDestinationPress = (location: {
+    latitude: number;
+    longitude: number;
+    address: string;
+  }) => {
+    setDestinationLocation(location);
+
+    router.push("/(root)/find-ride");
+  };
 
   return (
     <SafeAreaView>
