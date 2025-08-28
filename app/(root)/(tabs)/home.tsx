@@ -1,3 +1,4 @@
+import GoogleTextInput from "@/components/GoogleTextInput";
 import Map from "@/components/Map";
 import RideCard from "@/components/RideCard";
 import { icons, images } from "@/constants";
@@ -164,6 +165,8 @@ const Home = () => {
     router.replace("/(auth)/sign-in");
   };
 
+  const handleDestinationPress = () => {};
+
   return (
     <SafeAreaView>
       <SignedIn>
@@ -207,7 +210,11 @@ const Home = () => {
                 </TouchableOpacity>
               </View>
 
-              {/* TODO: add a GoogleTextInput component and use here */}
+              <GoogleTextInput
+                icon={icons.search}
+                containerStyle="bg-white shadow-md shadow-neutral-300"
+                handlePress={handleDestinationPress}
+              />
 
               <>
                 <Text className="text-xl font-JakartaBold mt-5 mb-3">
