@@ -1,6 +1,7 @@
 import { icons } from "@/constants";
 import { GoogleInputProps } from "@/types/type";
 import { Image, View } from "react-native";
+import "react-native-get-random-values";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 
 const googlePlacesApiKey = process.env.EXPO_PUBLIC_GOOGLE_API_KEY;
@@ -62,6 +63,8 @@ const GoogleTextInput = ({
           key: googlePlacesApiKey || "INVALID_KEY",
           language: "en",
         }}
+        predefinedPlaces={[]}
+        minLength={1}
         renderLeftButton={() => (
           <View className="justify-center items-center w-6 h-6">
             <Image
