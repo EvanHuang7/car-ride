@@ -21,6 +21,11 @@ const GoogleTextInput = ({
         apiKey={googlePlacesApiKey || "INVALID_KEY"}
         onPlaceSelect={(place: any) => {
           console.log("Selected place:", place);
+          handlePress({
+            latitude: place.details?.location?.latitude!,
+            longitude: place.details?.location?.longitude!,
+            address: place.details?.formattedAddress,
+          });
         }}
       />
     </View>
