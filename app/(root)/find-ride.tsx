@@ -1,6 +1,8 @@
-import { SafeAreaView, Text } from "react-native";
-
+import GoogleTextInput from "@/components/GoogleTextInput";
 import { useLocationStore } from "@/store";
+import { Text, View } from "react-native";
+
+import "../global.css";
 
 const FindRide = () => {
   const {
@@ -11,15 +13,29 @@ const FindRide = () => {
   } = useLocationStore();
 
   return (
-    <SafeAreaView className="flex-1 items-center justify-center bg-white">
-      <Text className="text-xl font-bold text-blue-500">FindRide</Text>
-      <Text className="text-xl font-bold text-blue-500">
-        you are here: {userAddress}
-      </Text>
-      <Text className="text-xl font-bold text-blue-500">
-        you are going to: {destinationAddress}
-      </Text>
-    </SafeAreaView>
+    <View>
+      <View className="my-3">
+        <Text className="text-lg font-JakartaSemiBold mb-3">From</Text>
+
+        <GoogleTextInput
+          initialLocation={userAddress!}
+          containerStyle="bg-neutral-100"
+          textInputBackgroundColor="#f5f5f5"
+          handlePress={(location) => setUserLocation(location)}
+        />
+      </View>
+
+      <View className="my-3">
+        <Text className="text-lg font-JakartaSemiBold mb-3">To</Text>
+
+        <GoogleTextInput
+          initialLocation={destinationAddress!}
+          containerStyle="bg-neutral-100"
+          textInputBackgroundColor="transparent"
+          handlePress={(location) => setDestinationLocation(location)}
+        />
+      </View>
+    </View>
   );
 };
 
