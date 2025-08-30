@@ -1,6 +1,5 @@
 import { GoogleInputProps } from "@/types/type";
 import { View } from "react-native";
-import "react-native-get-random-values";
 import GooglePlacesTextInput from "react-native-google-places-textinput";
 
 const googlePlacesApiKey = process.env.EXPO_PUBLIC_GOOGLE_API_KEY;
