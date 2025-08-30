@@ -17,15 +17,16 @@ const GoogleTextInput = ({
     >
       <GooglePlacesTextInput
         fetchDetails={true}
-        apiKey={googlePlacesApiKey || "INVALID_KEY"}
+        placeHolderText="Search"
+        debounceDelay={200}
         onPlaceSelect={(place: any) => {
-          console.log("Selected place:", place);
           handlePress({
             latitude: place.details?.location?.latitude!,
             longitude: place.details?.location?.longitude!,
             address: place.details?.formattedAddress,
           });
         }}
+        apiKey={googlePlacesApiKey || "INVALID_KEY"}
       />
     </View>
   );
