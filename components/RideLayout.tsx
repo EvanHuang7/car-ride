@@ -34,6 +34,8 @@ const RideLayout = ({
 
           <Map />
         </View>
+
+        {/* TODO: Finish the rest of this component before using it */}
       </View>
     </GestureHandlerRootView>
   );

@@ -15,9 +15,18 @@ const GoogleTextInput = ({
       className={`flex flex-row items-center justify-center relative z-50 rounded-xl truncate ${containerStyle}`}
     >
       <GooglePlacesTextInput
+        apiKey={googlePlacesApiKey || "INVALID_GOOGLE_API_KEY"}
         fetchDetails={true}
         placeHolderText="Where do you want to go?"
+        value={initialLocation}
         debounceDelay={200}
+        onPlaceSelect={(place: any) => {
+          handlePress({
+            latitude: place.details?.location?.latitude!,
+            longitude: place.details?.location?.longitude!,
+            address: place.text?.text,
+          });
+        }}
         style={{
           container: {
             width: "100%",
@@ -52,14 +61,6 @@ const GoogleTextInput = ({
             color: "#999",
           },
         }}
-        onPlaceSelect={(place: any) => {
-          handlePress({
-            latitude: place.details?.location?.latitude!,
-            longitude: place.details?.location?.longitude!,
-            address: place.text?.text,
-          });
-        }}
-        apiKey={googlePlacesApiKey || "INVALID_GOOGLE_API_KEY"}
       />
     </View>
   );
