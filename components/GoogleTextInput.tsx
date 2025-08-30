@@ -49,6 +49,7 @@ const GoogleTextInput = ({
     <View
       className={`flex flex-row items-center justify-center relative z-50 rounded-xl ${containerStyle}`}
     >
+      {/* TODO: fix displaying long address issue */}
       <GooglePlacesTextInput
         fetchDetails={true}
         placeHolderText="Where do you want to go?"
@@ -58,10 +59,10 @@ const GoogleTextInput = ({
           handlePress({
             latitude: place.details?.location?.latitude!,
             longitude: place.details?.location?.longitude!,
-            address: place.details?.formattedAddress,
+            address: place.text?.text,
           });
         }}
-        apiKey={googlePlacesApiKey || "INVALID_KEY"}
+        apiKey={googlePlacesApiKey || "INVALID_GOOGLE_API_KEY"}
       />
     </View>
   );
