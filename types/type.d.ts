@@ -102,7 +102,6 @@ declare interface DriverStore {
 }
 
 declare interface GoogleInputProps {
-  icon?: string;
   initialLocation?: string;
   containerStyle?: string;
   textInputBackgroundColor?: string;

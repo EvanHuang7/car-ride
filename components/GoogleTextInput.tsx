@@ -40,7 +40,6 @@ const customStyles = {
 const googlePlacesApiKey = process.env.EXPO_PUBLIC_GOOGLE_API_KEY;
 
 const GoogleTextInput = ({
-  icon,
   initialLocation,
   containerStyle,
   textInputBackgroundColor,
