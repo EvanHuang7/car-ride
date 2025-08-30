@@ -12,9 +12,8 @@ const GoogleTextInput = ({
 }: GoogleInputProps) => {
   return (
     <View
-      className={`flex flex-row items-center justify-center relative z-50 rounded-xl ${containerStyle}`}
+      className={`flex flex-row items-center justify-center relative z-50 rounded-xl truncate ${containerStyle}`}
     >
-      {/* TODO: fix displaying long address issue */}
       <GooglePlacesTextInput
         fetchDetails={true}
         placeHolderText="Where do you want to go?"
