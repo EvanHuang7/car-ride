@@ -1,6 +1,6 @@
 import Map from "@/components/Map";
 import { icons } from "@/constants";
-import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
+import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 import { router } from "expo-router";
 import React, { useRef } from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
@@ -44,14 +44,14 @@ const RideLayout = ({
           snapPoints={snapPoints || ["40%", "85%"]}
           index={0}
         >
-          <BottomSheetScrollView
+          <BottomSheetView
             style={{
               flex: 1,
               padding: 20,
             }}
           >
             {children}
-          </BottomSheetScrollView>
+          </BottomSheetView>
         </BottomSheet>
       </View>
     </GestureHandlerRootView>
