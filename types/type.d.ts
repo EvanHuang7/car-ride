@@ -115,3 +115,9 @@ declare interface GoogleInputProps {
     address: string;
   }) => void;
 }
+
+declare interface DriverCardProps {
+  item: MarkerData;
+  selected: number;
+  setSelected: () => void;
+}
