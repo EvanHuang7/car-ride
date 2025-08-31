@@ -36,6 +36,7 @@ const GoogleTextInput = ({
             height: 45,
             borderColor: "#ccc",
             borderRadius: 8,
+            backgroundColor: textInputBackgroundColor,
           },
           suggestionsContainer: {
             backgroundColor: "#ffffff",
