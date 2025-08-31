@@ -12,6 +12,12 @@ const Layout = () => {
           headerShown: false,
         }}
       />
+      <Stack.Screen
+        name="book-ride"
+        options={{
+          headerShown: false,
+        }}
+      />
     </Stack>
   );
 };
