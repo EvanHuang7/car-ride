@@ -1,4 +1,5 @@
 import GoogleTextInput from "@/components/GoogleTextInput";
+import RideLayout from "@/components/RideLayout";
 import { useLocationStore } from "@/store";
 import { Text, View } from "react-native";
 
@@ -13,7 +14,7 @@ const FindRide = () => {
   } = useLocationStore();
 
   return (
-    <View>
+    <RideLayout title="Ride">
       <View className="my-3">
         <Text className="text-lg font-JakartaSemiBold mb-3">From</Text>
 
@@ -35,7 +36,7 @@ const FindRide = () => {
           handlePress={(location) => setDestinationLocation(location)}
         />
       </View>
-    </View>
+    </RideLayout>
   );
 };
 
