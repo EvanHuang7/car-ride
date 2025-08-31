@@ -1,15 +1,16 @@
-import { Image, Text, View } from "react-native";
-
+import Payment from "@/components/Payment";
 import RideLayout from "@/components/RideLayout";
 import { icons } from "@/constants";
 import { formatTime } from "@/lib/utils";
 import { useDriverStore, useLocationStore } from "@/store";
+import { Image, Text, View } from "react-native";
 
 const BookRide = () => {
   const { userAddress, destinationAddress } = useLocationStore();
   const { drivers, selectedDriver } = useDriverStore();
 
   const driverDetails = drivers?.filter(
+    // eslint-disable-next-line prettier/prettier
     (driver) => +driver.id === selectedDriver
   )[0];
 
@@ -82,6 +83,7 @@ const BookRide = () => {
             </Text>
           </View>
         </View>
+        <Payment />
       </>
     </RideLayout>
   );
