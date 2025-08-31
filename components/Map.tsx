@@ -81,6 +81,8 @@ const Map = () => {
 
   // Set the markers based on db drivers
   useEffect(() => {
+    // TODO: update it to set real drivers data instead of mock data
+    setDrivers(drivers);
     if (Array.isArray(drivers)) {
       if (!userLatitude || !userLongitude) return;
 
