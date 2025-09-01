@@ -2,7 +2,7 @@ import CustomButton from "@/components/CustomButton";
 import { fetchAPI } from "@/lib/fetch";
 import { PaymentProps } from "@/types/type";
 import { useStripe } from "@stripe/stripe-react-native";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Alert } from "react-native";
 
 const Payment = ({
@@ -29,7 +29,6 @@ const Payment = ({
           name: fullName || email.split("@")[0],
           email: email,
           amount: amount,
-          //   paymentMethodId: paymentMethod.id,
         }),
         // eslint-disable-next-line prettier/prettier
       }
@@ -63,6 +62,8 @@ const Payment = ({
   };
 
   const openPaymentSheet = async () => {
+    await initializePaymentSheet();
+
     const { error } = await presentPaymentSheet();
 
     if (error) {
@@ -72,10 +73,6 @@ const Payment = ({
       Alert.alert("Success", "Your order is confirmed!");
     }
   };
-
-  useEffect(() => {
-    initializePaymentSheet();
-  }, []);
 
   return (
     <>
