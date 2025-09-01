@@ -1,10 +1,17 @@
 import CustomButton from "@/components/CustomButton";
 import { fetchAPI } from "@/lib/fetch";
+import { PaymentProps } from "@/types/type";
 import { useStripe } from "@stripe/stripe-react-native";
 import React, { useEffect, useState } from "react";
 import { Alert } from "react-native";
 
-const Payment = () => {
+const Payment = ({
+  fullName,
+  email,
+  amount,
+  driverId,
+  rideTime,
+}: PaymentProps) => {
   const { initPaymentSheet, presentPaymentSheet } = useStripe();
   const [success, setSuccess] = useState<boolean>(false);
   const [loading, setLoading] = useState(false);
@@ -19,9 +26,9 @@ const Payment = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          //   name: fullName || email.split("@")[0],
-          //   email: email,
-          //   amount: amount,
+          name: fullName || email.split("@")[0],
+          email: email,
+          amount: amount,
           //   paymentMethodId: paymentMethod.id,
         }),
         // eslint-disable-next-line prettier/prettier
@@ -46,9 +53,9 @@ const Payment = () => {
       customerId: customer,
       customerEphemeralKeySecret: ephemeralKey,
       paymentIntentClientSecret: paymentIntent,
-      //   defaultBillingDetails: {
-      //     name: fullName,
-      //   },
+      defaultBillingDetails: {
+        name: fullName,
+      },
     });
     if (!error) {
       setLoading(true);
