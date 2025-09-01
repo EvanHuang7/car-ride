@@ -14,7 +14,6 @@ const Payment = ({
 }: PaymentProps) => {
   const { initPaymentSheet, presentPaymentSheet } = useStripe();
   const [success, setSuccess] = useState<boolean>(false);
-  const [loading, setLoading] = useState(false);
 
   // Get paymentIntent, ephemeralKey and customer from server api
   const fetchPaymentSheetParams = async () => {
@@ -47,7 +46,7 @@ const Payment = ({
     const { paymentIntent, ephemeralKey, customer } =
       await fetchPaymentSheetParams();
 
-    const { error } = await initPaymentSheet({
+    await initPaymentSheet({
       merchantDisplayName: "Example, Inc.",
       customerId: customer,
       customerEphemeralKeySecret: ephemeralKey,
@@ -56,21 +55,27 @@ const Payment = ({
         name: fullName,
       },
     });
-    if (!error) {
-      setLoading(true);
-    }
   };
 
+  // Call initializePaymentSheet function and presentPaymentSheet Strip api
+  // to open Strip payment sheet modal
   const openPaymentSheet = async () => {
+    // call initializePaymentSheet function
     await initializePaymentSheet();
 
+    // call presentPaymentSheet Strip api to open Strip payment sheet modal
     const { error } = await presentPaymentSheet();
 
+    // If failed to open Strip payment sheet modal, or user canceled the payment intent
     if (error) {
       Alert.alert(`Error code: ${error.code}`, error.message);
     } else {
+      // If user finished payment successfully after Strip payment sheet modal opened
       setSuccess(true);
-      Alert.alert("Success", "Your order is confirmed!");
+      Alert.alert("Success", "🎉 Your payment was successful!");
+      // NOTE: In real industry work, the best practice is to listen to
+      // Strip webhook event instead of executing the callback function.
+      // TODO: Call the server api to create the ride
     }
   };
 
