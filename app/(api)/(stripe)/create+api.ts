@@ -48,16 +48,10 @@ export async function POST(request: Request) {
     },
   });
 
-  // res.json({
-  //   paymentIntent: paymentIntent.client_secret,
-  //   ephemeralKey: ephemeralKey.secret,
-  //   customer: customer.id,
-  // });
-
   return new Response(
     JSON.stringify({
-      paymentIntent: paymentIntent,
-      ephemeralKey: ephemeralKey,
+      paymentIntent: paymentIntent.client_secret,
+      ephemeralKey: ephemeralKey.secret,
       customer: customer.id,
       // eslint-disable-next-line prettier/prettier
     })
