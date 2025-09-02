@@ -1,5 +1,8 @@
 import { Driver, MarkerData } from "@/types/type";
 
+const directionsAPI = process.env.EXPO_PUBLIC_GOOGLE_API_KEY;
+
+// Generate random position of markers (car icons) around user location
 export const generateMarkersFromData = ({
   data,
   userLatitude,
@@ -22,6 +25,8 @@ export const generateMarkersFromData = ({
   });
 };
 
+// Determine the visible map region (center point and zoom level)
+// for the MapView in React Native Maps.
 export const calculateRegion = ({
   userLatitude,
   userLongitude,
@@ -68,4 +73,55 @@ export const calculateRegion = ({
     latitudeDelta,
     longitudeDelta,
   };
+};
+
+// Calculate the time and price to destination for all drivers
+export const calculateDriverTimes = async ({
+  markers,
+  userLatitude,
+  userLongitude,
+  destinationLatitude,
+  destinationLongitude,
+}: {
+  markers: MarkerData[];
+  userLatitude: number | null;
+  userLongitude: number | null;
+  destinationLatitude: number | null;
+  destinationLongitude: number | null;
+}) => {
+  if (
+    !userLatitude ||
+    !userLongitude ||
+    !destinationLatitude ||
+    !destinationLongitude
+  )
+    return;
+
+  try {
+    const timesPromises = markers.map(async (marker) => {
+      const responseToUser = await fetch(
+        // eslint-disable-next-line prettier/prettier
+        `https://maps.googleapis.com/maps/api/directions/json?origin=${marker.latitude},${marker.longitude}&destination=${userLatitude},${userLongitude}&key=${directionsAPI}`
+      );
+      const dataToUser = await responseToUser.json();
+      const timeToUser = dataToUser.routes[0].legs[0].duration.value; // Time in seconds
+
+      const responseToDestination = await fetch(
+        // eslint-disable-next-line prettier/prettier
+        `https://maps.googleapis.com/maps/api/directions/json?origin=${userLatitude},${userLongitude}&destination=${destinationLatitude},${destinationLongitude}&key=${directionsAPI}`
+      );
+      const dataToDestination = await responseToDestination.json();
+      const timeToDestination =
+        dataToDestination.routes[0].legs[0].duration.value; // Time in seconds
+
+      const totalTime = (timeToUser + timeToDestination) / 60; // Total time in minutes
+      const price = (totalTime * 0.5).toFixed(2); // Calculate price based on time
+
+      return { ...marker, time: totalTime, price };
+    });
+
+    return await Promise.all(timesPromises);
+  } catch (error) {
+    console.error("Error calculating driver times:", error);
+  }
 };
