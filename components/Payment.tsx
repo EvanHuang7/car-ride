@@ -1,6 +1,8 @@
 import CustomButton from "@/components/CustomButton";
 import { fetchAPI } from "@/lib/fetch";
+import { useLocationStore } from "@/store";
 import { PaymentProps } from "@/types/type";
+import { useAuth } from "@clerk/clerk-expo";
 import { useStripe } from "@stripe/stripe-react-native";
 import React, { useState } from "react";
 import { Alert } from "react-native";
@@ -12,8 +14,18 @@ const Payment = ({
   driverId,
   rideTime,
 }: PaymentProps) => {
+  const { userId } = useAuth();
   const { initPaymentSheet, presentPaymentSheet } = useStripe();
   const [success, setSuccess] = useState<boolean>(false);
+
+  const {
+    userAddress,
+    userLongitude,
+    userLatitude,
+    destinationLatitude,
+    destinationAddress,
+    destinationLongitude,
+  } = useLocationStore();
 
   // Get paymentIntent, ephemeralKey and customer from server api
   const fetchPaymentSheetParams = async () => {
@@ -75,7 +87,25 @@ const Payment = ({
       Alert.alert("Success", "🎉 Your payment was successful!");
       // NOTE: In real industry work, the best practice is to listen to
       // Strip webhook event instead of executing the callback function.
-      // TODO: Call the server api to create the ride
+      await fetchAPI("/(api)/ride/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          origin_address: userAddress,
+          destination_address: destinationAddress,
+          origin_latitude: userLatitude,
+          origin_longitude: userLongitude,
+          destination_latitude: destinationLatitude,
+          destination_longitude: destinationLongitude,
+          ride_time: rideTime.toFixed(0),
+          fare_price: parseInt(amount) * 100,
+          payment_status: "paid",
+          driver_id: driverId,
+          user_id: userId,
+        }),
+      });
     }
   };
 
