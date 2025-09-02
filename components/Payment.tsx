@@ -62,7 +62,7 @@ const Payment = ({
       await fetchPaymentSheetParams();
 
     await initPaymentSheet({
-      merchantDisplayName: "Example, Inc.",
+      merchantDisplayName: "CarRide Inc.",
       customerId: customer,
       customerEphemeralKeySecret: ephemeralKey,
       paymentIntentClientSecret: paymentIntent,
