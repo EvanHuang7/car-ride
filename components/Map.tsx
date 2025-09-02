@@ -114,6 +114,33 @@ const Map = () => {
           }
         />
       ))}
+
+      {destinationLatitude && destinationLongitude && (
+        <>
+          <Marker
+            key="destination"
+            coordinate={{
+              latitude: destinationLatitude,
+              longitude: destinationLongitude,
+            }}
+            title="Destination"
+            image={icons.pin}
+          />
+          {/* <MapViewDirections
+            origin={{
+              latitude: userLatitude!,
+              longitude: userLongitude!,
+            }}
+            destination={{
+              latitude: destinationLatitude,
+              longitude: destinationLongitude,
+            }}
+            apikey={directionsAPI!}
+            strokeColor="#0286FF"
+            strokeWidth={2}
+          /> */}
+        </>
+      )}
     </MapView>
   );
 };
