@@ -10,6 +10,7 @@ import { Driver, MarkerData } from "@/types/type";
 import React, { useEffect, useState } from "react";
 import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
 import MapView, { Marker, PROVIDER_DEFAULT } from "react-native-maps";
+import MapViewDirections from "react-native-maps-directions";
 
 const styles = StyleSheet.create({
   map: {
@@ -19,6 +20,8 @@ const styles = StyleSheet.create({
     borderRadius: 16, // rounded-2xl
   },
 });
+
+const directionsAPI = process.env.EXPO_PUBLIC_GOOGLE_API_KEY;
 
 const Map = () => {
   const {
@@ -126,7 +129,7 @@ const Map = () => {
             title="Destination"
             image={icons.pin}
           />
-          {/* <MapViewDirections
+          <MapViewDirections
             origin={{
               latitude: userLatitude!,
               longitude: userLongitude!,
@@ -138,7 +141,7 @@ const Map = () => {
             apikey={directionsAPI!}
             strokeColor="#0286FF"
             strokeWidth={2}
-          /> */}
+          />
         </>
       )}
     </MapView>
