@@ -1,9 +1,24 @@
 import CustomButton from "@/components/CustomButton";
 import { icons } from "@/constants";
-import { Image, Text, View } from "react-native";
+import { googleOAuth } from "@/lib/auth";
+import { useSSO } from "@clerk/clerk-expo";
+import { router } from "expo-router";
+import { Alert, Image, Text, View } from "react-native";
 
 const OAuth = () => {
-  const handleGoogleSignIn = async () => {};
+  // Use the `useSSO()` hook to access the `startSSOFlow()` method
+  const { startSSOFlow } = useSSO();
+
+  const handleGoogleSignIn = async () => {
+    const result = await googleOAuth(startSSOFlow);
+
+    if (result.code === "session_exists") {
+      Alert.alert("Success", "Session exists. Redirecting to home screen.");
+      router.replace("/(root)/(tabs)/home");
+    }
+
+    Alert.alert(result.success ? "Success" : "Error", result.message);
+  };
 
   return (
     <View>
