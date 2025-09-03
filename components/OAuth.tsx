@@ -3,7 +3,7 @@ import { icons } from "@/constants";
 import { googleOAuth } from "@/lib/auth";
 import { useSSO } from "@clerk/clerk-expo";
 import { router } from "expo-router";
-import { Alert, Image, Text, View } from "react-native";
+import { Image, Text, View } from "react-native";
 
 const OAuth = () => {
   // Use the `useSSO()` hook to access the `startSSOFlow()` method
@@ -13,11 +13,8 @@ const OAuth = () => {
     const result = await googleOAuth(startSSOFlow);
 
     if (result.code === "success") {
-      Alert.alert("Success", "Session exists. Redirecting to home screen.");
       router.replace("/(root)/(tabs)/home");
     }
-
-    Alert.alert(result.success ? "Success" : "Error", result.message);
   };
 
   return (
