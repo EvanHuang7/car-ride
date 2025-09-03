@@ -6,7 +6,7 @@ import { PaymentProps } from "@/types/type";
 import { useAuth } from "@clerk/clerk-expo";
 import { useStripe } from "@stripe/stripe-react-native";
 import { router } from "expo-router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Alert, Image, Text, View } from "react-native";
 import { ReactNativeModal } from "react-native-modal";
 
@@ -75,9 +75,6 @@ const Payment = ({
   // Call initializePaymentSheet function and presentPaymentSheet Strip api
   // to open Strip payment sheet modal
   const openPaymentSheet = async () => {
-    // call initializePaymentSheet function
-    await initializePaymentSheet();
-
     // call presentPaymentSheet Strip api to open Strip payment sheet modal
     const { error } = await presentPaymentSheet();
 
@@ -110,6 +107,12 @@ const Payment = ({
       });
     }
   };
+
+  useEffect(() => {
+    // call initializePaymentSheet function when user lands the book ride page,
+    // which saves more time than initializing PaymentSheet only when user clicks the button.
+    initializePaymentSheet();
+  }, []);
 
   return (
     <>
