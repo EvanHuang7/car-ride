@@ -1,6 +1,5 @@
 import { fetchAPI } from "@/lib/fetch";
 import * as AuthSession from "expo-auth-session";
-import { router } from "expo-router";
 
 export const googleOAuth = async (startSSOFlow: any) => {
   try {
@@ -20,16 +19,8 @@ export const googleOAuth = async (startSSOFlow: any) => {
       // set active session when active session exists.
       setActive!({
         session: createdSessionId,
-        navigate: async ({ session }: any) => {
-          if (session?.currentTask) {
-            // Check for tasks and navigate to custom UI to help users resolve them
-            // See https://clerk.com/docs/custom-flows/overview#session-tasks
-            console.log(session?.currentTask);
-            return;
-          }
-
-          router.push("/(root)/(tabs)/home");
-        },
+        // NOTE: We don't need to set `navigate` callback method optional field
+        // becuase we don't requires further user action, such as, MFA, email/phone verification, etc, for this case.
       });
 
       // If it is a sign up action for a new user, create a user record in DB
