@@ -9,7 +9,7 @@ import { useDriverStore, useLocationStore } from "@/store";
 import { Driver, MarkerData } from "@/types/type";
 import React, { useEffect, useState } from "react";
 import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
-import MapView, { Marker, PROVIDER_DEFAULT } from "react-native-maps";
+import MapView, { Marker, Polyline, PROVIDER_DEFAULT } from "react-native-maps";
 import MapViewDirections from "react-native-maps-directions";
 
 const styles = StyleSheet.create({
@@ -37,12 +37,18 @@ const Map = () => {
   // Car icons
   const [markers, setMarkers] = useState<MarkerData[]>([]);
 
+  const [routeCoords, setRouteCoords] = useState([]);
+
   const region = calculateRegion({
     userLatitude,
     userLongitude,
     destinationLatitude,
     destinationLongitude,
   });
+
+  const handleReady = (result) => {
+    setRouteCoords(result.coordinates);
+  };
 
   // Set the markers (car icons) based on db drivers
   useEffect(() => {
@@ -129,19 +135,29 @@ const Map = () => {
             title="Destination"
             image={icons.pin}
           />
-          <MapViewDirections
-            origin={{
-              latitude: userLatitude!,
-              longitude: userLongitude!,
-            }}
-            destination={{
-              latitude: destinationLatitude,
-              longitude: destinationLongitude,
-            }}
-            apikey={directionsAPI!}
-            strokeColor="#0286FF"
-            strokeWidth={2}
-          />
+
+          {routeCoords.length > 0 ? (
+            <Polyline
+              coordinates={routeCoords}
+              strokeColor="#0286FF"
+              strokeWidth={2}
+            />
+          ) : (
+            <MapViewDirections
+              origin={{
+                latitude: userLatitude!,
+                longitude: userLongitude!,
+              }}
+              destination={{
+                latitude: destinationLatitude,
+                longitude: destinationLongitude,
+              }}
+              apikey={directionsAPI!}
+              strokeColor="#0286FF"
+              strokeWidth={2}
+              onReady={handleReady}
+            />
+          )}
         </>
       )}
     </MapView>
