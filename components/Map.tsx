@@ -5,7 +5,11 @@ import {
   calculateRegion,
   generateMarkersFromData,
 } from "@/lib/map";
-import { useDriverStore, useLocationStore } from "@/store";
+import {
+  useDriverStore,
+  useGoogleApiResultCacheStore,
+  useLocationStore,
+} from "@/store";
 import { Driver, MarkerData } from "@/types/type";
 import React, { useEffect, useState } from "react";
 import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
@@ -37,7 +41,9 @@ const Map = () => {
   // Car icons
   const [markers, setMarkers] = useState<MarkerData[]>([]);
 
-  const [routeCoords, setRouteCoords] = useState([]);
+  // Cache the Google Direction API call result
+  const { directionPathCoords, setDirectionPathCoords } =
+    useGoogleApiResultCacheStore();
 
   const region = calculateRegion({
     userLatitude,
@@ -47,7 +53,19 @@ const Map = () => {
   });
 
   const handleReady = (result) => {
-    setRouteCoords(result.coordinates);
+    // TODO: remove test log
+    console.log(
+      "handleReady in MapViewDirections component with Google Directions API call"
+    );
+
+    setDirectionPathCoords(result.coordinates);
+  };
+
+  // TODO: remove test log function
+  const logStart = (result) => {
+    console.log(
+      "logStart in MapViewDirections component with Google Directions API call"
+    );
   };
 
   // Set the markers (car icons) based on db drivers
@@ -68,11 +86,14 @@ const Map = () => {
 
   // Create a path between user location and destination and set drivers
   useEffect(() => {
-    if (
-      markers.length > 0 &&
-      destinationLatitude !== undefined &&
-      destinationLongitude !== undefined
-    ) {
+    if (markers.length > 0 && !!destinationLatitude && !!destinationLongitude) {
+      // TODO: remove test log function
+      console.log(
+        "call calculateDriverTimes() function with Google Directions API call: destinationLatitude, destinationLongitude,",
+        destinationLatitude,
+        destinationLongitude
+      );
+      // TODO: Cache the result to to global store
       calculateDriverTimes({
         markers,
         userLatitude,
@@ -136,11 +157,11 @@ const Map = () => {
             image={icons.pin}
           />
 
-          {routeCoords.length > 0 ? (
+          {directionPathCoords.length > 0 ? (
             <Polyline
-              coordinates={routeCoords}
+              coordinates={directionPathCoords}
               strokeColor="#0286FF"
-              strokeWidth={2}
+              strokeWidth={6}
             />
           ) : (
             <MapViewDirections
@@ -156,6 +177,7 @@ const Map = () => {
               strokeColor="#0286FF"
               strokeWidth={2}
               onReady={handleReady}
+              onStart={logStart}
             />
           )}
         </>
