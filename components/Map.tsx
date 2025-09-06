@@ -57,28 +57,16 @@ const Map = () => {
     destinationLongitude,
   });
 
-  const handleReady = (result) => {
-    // TODO: remove test log
-    console.log(
-      "handleReady in MapViewDirections component with Google Directions API call"
-    );
-
+  const handleReady = (result: any) => {
     setDirectionPathCoords(result.coordinates);
   };
 
-  // TODO: remove test log function
-  const logStart = (result) => {
-    console.log(
-      "logStart in MapViewDirections component with Google Directions API call"
-    );
-  };
-
-  // TODO: fix creating new markers in different page
   // Set the markers (car icons) based on db drivers
   useEffect(() => {
     if (Array.isArray(drivers)) {
       if (!userLatitude || !userLongitude) return;
 
+      // TODO: try to stop creating new markers in different ride pages
       // Generate random position of car icons around user location
       const newMarkers = generateMarkersFromData({
         data: drivers,
@@ -201,7 +189,6 @@ const Map = () => {
               strokeColor="#0286FF"
               strokeWidth={2}
               onReady={handleReady}
-              onStart={logStart}
             />
           )}
         </>
