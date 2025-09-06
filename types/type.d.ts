@@ -135,7 +135,25 @@ declare interface LatLng {
   longitude: number;
 }
 
+declare type DriverCacheKey = string;
+
 declare interface GoogleApiResultCacheStore {
   directionPathCoords: LatLng[];
   setDirectionPathCoords: (coords: LatLng[]) => void;
+  driverResultsCache: Record<DriverCacheKey, MarkerData[]>;
+  getCachedDrivers: (
+    userLat: number,
+    userLng: number,
+    destLat: number,
+    // eslint-disable-next-line prettier/prettier
+    destLng: number
+  ) => MarkerData[] | undefined;
+  setCachedDrivers: (
+    userLat: number,
+    userLng: number,
+    destLat: number,
+    destLng: number,
+    // eslint-disable-next-line prettier/prettier
+    drivers: MarkerData[]
+  ) => void;
 }

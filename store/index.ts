@@ -56,10 +56,24 @@ export const useDriverStore = create<DriverStore>((set) => ({
 }));
 
 export const useGoogleApiResultCacheStore = create<GoogleApiResultCacheStore>(
-  (set) => ({
+  (set, get) => ({
     directionPathCoords: [],
     setDirectionPathCoords: (coords) =>
       set(() => ({ directionPathCoords: coords })),
+    driverResultsCache: {},
+    getCachedDrivers: (userLat, userLng, destLat, destLng) => {
+      const key = `${userLat},${userLng}|${destLat},${destLng}`;
+      return get().driverResultsCache[key];
+    },
+    setCachedDrivers: (userLat, userLng, destLat, destLng, drivers) => {
+      const key = `${userLat},${userLng}|${destLat},${destLng}`;
+      set((state) => ({
+        driverResultsCache: {
+          ...state.driverResultsCache,
+          [key]: drivers,
+        },
+      }));
+    },
     // eslint-disable-next-line prettier/prettier
   })
 );
