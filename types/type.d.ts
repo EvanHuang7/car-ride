@@ -129,3 +129,13 @@ declare interface PaymentProps {
   driverId: number;
   rideTime: number;
 }
+
+declare interface LatLng {
+  latitude: number;
+  longitude: number;
+}
+
+declare interface GoogleApiResultCacheStore {
+  directionPathCoords: LatLng[];
+  setDirectionPathCoords: (coords: LatLng[]) => void;
+}

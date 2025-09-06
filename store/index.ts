@@ -1,4 +1,9 @@
-import { DriverStore, LocationStore, MarkerData } from "@/types/type";
+import {
+  DriverStore,
+  GoogleApiResultCacheStore,
+  LocationStore,
+  MarkerData,
+} from "@/types/type";
 import { create } from "zustand";
 
 export const useLocationStore = create<LocationStore>((set) => ({
@@ -49,3 +54,12 @@ export const useDriverStore = create<DriverStore>((set) => ({
   setDrivers: (drivers: MarkerData[]) => set(() => ({ drivers })),
   clearSelectedDriver: () => set(() => ({ selectedDriver: null })),
 }));
+
+export const useGoogleApiResultCacheStore = create<GoogleApiResultCacheStore>(
+  (set) => ({
+    directionPathCoords: [],
+    setDirectionPathCoords: (coords) =>
+      set(() => ({ directionPathCoords: coords })),
+    // eslint-disable-next-line prettier/prettier
+  })
+);
