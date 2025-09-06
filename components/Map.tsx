@@ -42,8 +42,13 @@ const Map = () => {
   const [markers, setMarkers] = useState<MarkerData[]>([]);
 
   // Cache the Google Direction API call result
-  const { directionPathCoords, setDirectionPathCoords } =
-    useGoogleApiResultCacheStore();
+  const {
+    directionPathCoords,
+    setDirectionPathCoords,
+    driverResultsCache,
+    getCachedDrivers,
+    setCachedDrivers,
+  } = useGoogleApiResultCacheStore();
 
   const region = calculateRegion({
     userLatitude,
@@ -68,6 +73,7 @@ const Map = () => {
     );
   };
 
+  // TODO: fix creating new markers in different page
   // Set the markers (car icons) based on db drivers
   useEffect(() => {
     if (Array.isArray(drivers)) {
@@ -86,23 +92,41 @@ const Map = () => {
 
   // Create a path between user location and destination and set drivers
   useEffect(() => {
-    if (markers.length > 0 && !!destinationLatitude && !!destinationLongitude) {
-      // TODO: remove test log function
-      console.log(
-        "call calculateDriverTimes() function with Google Directions API call: destinationLatitude, destinationLongitude,",
-        destinationLatitude,
-        destinationLongitude
-      );
-      // TODO: Cache the result to to global store
-      calculateDriverTimes({
-        markers,
+    if (
+      markers.length > 0 &&
+      !!userLatitude &&
+      !!userLongitude &&
+      !!destinationLatitude &&
+      !!destinationLongitude
+    ) {
+      const driversDataInCache = getCachedDrivers(
         userLatitude,
         userLongitude,
         destinationLatitude,
-        destinationLongitude,
-      }).then((drivers) => {
-        setDrivers(drivers as MarkerData[]);
-      });
+        // eslint-disable-next-line prettier/prettier
+        destinationLongitude
+      );
+      if (!!driversDataInCache) {
+        setDrivers(driversDataInCache as MarkerData[]);
+      } else {
+        calculateDriverTimes({
+          markers,
+          userLatitude,
+          userLongitude,
+          destinationLatitude,
+          destinationLongitude,
+        }).then((drivers) => {
+          setDrivers(drivers as MarkerData[]);
+          setCachedDrivers(
+            userLatitude,
+            userLongitude,
+            destinationLatitude,
+            destinationLongitude,
+            // eslint-disable-next-line prettier/prettier
+            drivers as MarkerData[]
+          );
+        });
+      }
     }
   }, [markers, destinationLatitude, destinationLongitude]);
 
